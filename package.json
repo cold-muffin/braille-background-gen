@@ -15,5 +15,8 @@
   "devDependencies": {
     "http-server": "^0.11.1",
     "typescript": "^4.9.3"
+  },
+  "dependencies": {
+    "canvas": "^3.2.1"
   }
 }
