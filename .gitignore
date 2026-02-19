@@ -1,4 +1,5 @@
 node_modules
 data/*
+images/*
 .venv
 __pycache__/

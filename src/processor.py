@@ -1,4 +1,30 @@
 import imageio.v3 as iio
+import numpy as np
+
+def autocrop(image_path, output_path):
+  img = iio.imread(image_path)
+  
+  if img.shape[2] == 4:
+    alpha_mask = img[:, :, 3] >= 128
+  else:
+    # If no alpha, treat all pixels as opaque
+    alpha_mask = np.ones(img.shape[:2], dtype=bool)
+
+  color_mask = np.any(img[:, :, :3] < 255, axis=2)
+  final_mask = alpha_mask & color_mask
+  coords = np.argwhere(final_mask)
+
+  if coords.size == 0:
+    print("Image is entirely empty or white!")
+    return
+
+  y_min, x_min = coords.min(axis=0)
+  y_max, x_max = coords.max(axis=0)
+
+  cropped_img = img[y_min:y_max+1, x_min:x_max+1]
+
+  iio.imwrite(output_path, cropped_img)
+  print(f"Cropped from {img.shape[:2]} to {cropped_img.shape[:2]}")
 
 def read_img(file_path):
   img = iio.imread(file_path)
@@ -13,8 +39,6 @@ def get_scale(img_width: int, img_height: int, ascii_width: int, ascii_height: i
   scale_x = img_width / ascii_width
   scale_y = img_height / ascii_height
   return scale_x, scale_y
-
-
 
 def get_color_outp(
   scale_x: float,
