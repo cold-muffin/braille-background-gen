@@ -27,7 +27,7 @@ if __name__ == "__main__":
 
         PATH_TO_IMAGE_FILE=getenv("PATH_TO_IMAGE_FILE")
         DITHER=getenv("DITHER")
-        THRESHOLD=getenv("TRESHOLD")
+        THRESHOLD=getenv("THRESHOLD")
         INVERT=getenv("INVERT")
         MEMOIZATION=getenv("MEMOIZATION")
 
