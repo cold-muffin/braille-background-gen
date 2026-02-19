@@ -1,5 +1,7 @@
 import subprocess
 import math
+from dotenv import load_dotenv
+from os import getenv
 
 from .processor import autocrop, read_img, get_dim, get_scale, get_color_outp
 
@@ -14,12 +16,30 @@ def convert(path, width, dither, threshold, invert):
 terminal_width = 202
 terminal_height = 58-3
 
-# --- Configuration ---
-file_path = "images/mega_blaziken.png"
-read_path = "data/outp.png"
+# Read .env
+load_dotenv()
+
+PATH_TO_IMAGE_FILE=getenv("PATH_TO_IMAGE_FILE")
+DITHER=getenv("DITHER")
+THRESHOLD=getenv("TRESHOLD")
+INVERT=getenv("INVERT")
+
+if not PATH_TO_IMAGE_FILE:
+    raise ValueError("No path to image file specified")
+
+file_path = PATH_TO_IMAGE_FILE
+dither = DITHER or "floydSteinberg"
+threshold = int(THRESHOLD or "100")
+
+if INVERT and INVERT not in ["true", "false"]:
+    raise ValueError("Got INVERT as non-boolean value")
+elif INVERT == "true":
+    invert = True
+else:
+    invert = False
+
+read_path = f"data/{file_path.split("/")[-1]}"
 ascii_width = terminal_width
-dither = "floydSteinberg"
-invert = False
 
 autocrop(file_path, read_path)
 
@@ -30,7 +50,7 @@ projected_ascii_height = math.ceil(ascii_width/(dim_x*2/dim_y))
 if projected_ascii_height > terminal_height:
     ascii_width = math.floor(ascii_width * (terminal_height/projected_ascii_height))
 
-raw = convert(read_path, ascii_width, dither, 199, invert)
+raw = convert(read_path, ascii_width, dither, 254, invert)
 ascii_lines = [line for line in raw.split("\n") if line.strip()] # Remove trailing empty lines
 ascii_height = len(ascii_lines)
 
