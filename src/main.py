@@ -4,8 +4,7 @@ from dotenv import load_dotenv
 from os import getenv
 import sys
 from pathlib import Path
-
-from .processor import autocrop, read_img, get_dim, get_scale, get_color_outp
+import time
 
 def convert(path, width, dither, threshold, invert):
     result = subprocess.run(
@@ -56,10 +55,12 @@ if __name__ == "__main__":
         cache_path = Path(f"data/{".".join(file_path.split("/")[-1].split(".")[:-1])}")
         if memoization:
             if cache_path.exists():
-                print("exists, printing...")
+                #print("exists, printing...")
                 with open(cache_path, "r") as f:
                     print("\n".join(f.read().split("\n")[7:]))
                 return
+
+        from .processor import autocrop, read_img, get_dim, get_scale, get_color_outp
 
         read_path = f"data/{file_path.split("/")[-1]}"
         ascii_width = terminal_width
@@ -88,5 +89,7 @@ if __name__ == "__main__":
                 #print("Creating cache path...")
                 with open(cache_path, "a") as f:
                     f.write("\n".join([file_path, str(dither), str(threshold), str(invert), str(terminal_width), str(terminal_height), outp]))
-
+    
+    #begin = time.time()
     main()
+    #print(time.time()-begin)
