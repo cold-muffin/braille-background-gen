@@ -15,7 +15,7 @@ def autocrop(image_path, output_path):
   coords = np.argwhere(final_mask)
 
   if coords.size == 0:
-    print("Image is entirely empty or white!")
+    #print("Image is entirely empty or white!")
     return
 
   y_min, x_min = coords.min(axis=0)
@@ -24,7 +24,7 @@ def autocrop(image_path, output_path):
   cropped_img = img[y_min:y_max+1, x_min:x_max+1]
 
   iio.imwrite(output_path, cropped_img)
-  print(f"Cropped from {img.shape[:2]} to {cropped_img.shape[:2]}")
+  #print(f"Cropped from {img.shape[:2]} to {cropped_img.shape[:2]}")
 
 def read_img(file_path):
   img = iio.imread(file_path)
