@@ -11,7 +11,7 @@ def convert(path, width, dither, threshold, invert):
     return result.stdout
 
 # --- Configuration ---
-file_path = "data/mega_magearna.png"
+file_path = "images/mega_magearna.png"
 ascii_width = 202
 dither = "floydSteinberg"
 invert = False
