@@ -57,7 +57,7 @@ if __name__ == "__main__":
             if cache_path.exists():
                 #print("exists, printing...")
                 with open(cache_path, "r") as f:
-                    print("\n".join(f.read().split("\n")[7:]))
+                    print("\n".join(f.read().split("\n")[6:]))
                 return
 
         from .processor import autocrop, read_img, get_dim, get_scale, get_color_outp
